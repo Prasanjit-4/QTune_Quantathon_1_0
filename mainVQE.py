@@ -5,6 +5,7 @@ import numpy as np
 
 from qiskit.quantum_info import SparsePauliOp
 from qiskit.primitives import Estimator
+from qiskit import QuantumCircuit
 
 
 num_qubits = 4
@@ -14,27 +15,26 @@ ansatz.decompose().draw("mpl", style="iqx")
 estimator = Estimator()
 
 
-
-
-
 vqe = VQE(estimator, ansatz, optimizer)
+
 H2_op = SparsePauliOp.from_list([
- ("IIIZ", 0.00698131079425246),
- ("IIZI", -0.0004978294000830275),
- ("IZII", +4.664512584628966e-05),
- ("ZIII", +0.0004303465157577957),
- ("IIZZ", +0.5099539391488543),
- ("IZIZ", +0.5099677387273946 ),
- ("IZZI", +0.5099488492845516),
- ("ZIIZ", +0.5099106232913859),
- ("ZIZI", +0.5099467089998899),
- ("ZZII", +0.5099046167492709)
+("IIIZ", 0.00698131079425246),
+("IIZI", -0.0004978294000830275),
+("IZII", +4.664512584628966e-05),
+("ZIII", +0.0004303465157577957),
+("IIZZ", +0.5099539391488543),
+("IZIZ", +0.5099677387273946 ),
+("IZZI", +0.5099488492845516),
+("ZIIZ", +0.5099106232913859),
+("ZIZI", +0.5099467089998899),
+("ZZII", +0.5099046167492709)
 ])
 
 result = vqe.compute_minimum_eigenvalue(H2_op)
 
 
 print(result)
+
 
 
 
