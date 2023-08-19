@@ -7,6 +7,8 @@ from qiskit.algorithms.optimizers import COBYLA
 from qiskit import BasicAer,execute
 from qiskit.algorithms.minimum_eigensolvers import VQE
 from qiskit.utils import QuantumInstance
+from qiskit.primitives import Estimator
+
 
 a=0.00698131079425246 
 b=-0.0004978294000830275
@@ -24,19 +26,25 @@ hamiltonian=SparsePauliOp.from_list([("IIIZ",a),("IIZI",b),("IZII",c),("ZIII",d)
 h_mat=hamiltonian.to_matrix()
 
 print(hamiltonian.num_qubits)
-min_val_for_hamiltonian = NumPyMinimumEigensolver().compute_minimum_eigenvalue(hamiltonian).eigenstate
+min_val_for_hamiltonian = NumPyMinimumEigensolver().compute_minimum_eigenvalue(hamiltonian).eigenvalue
 
 print(min_val_for_hamiltonian)
 
 ansatz = TwoLocal(hamiltonian.num_qubits, "ry", "cz", reps=3, entanglement="full")
+ansatz.decompose().draw("mpl", style="iqx")
 optimizer = COBYLA(maxiter=100)
-backend = BasicAer.get_backend('qasm_simulator')
-expectation = AerPauliExpectation()
-vqe = VQE(ansatz, optimizer, expectation)
+# backend = BasicAer.get_backend('qasm_simulator')
+# expectation = AerPauliExpectation()
+estimator=Estimator()
+vqe = VQE(ansatz=ansatz, optimizer=optimizer,estimator=estimator)
 
-quantum_instance = QuantumInstance(backend=backend,shots=1024)
+# quantum_instance = QuantumInstance(backend=backend,shots=1024)
 
-# Run the VQE algorithm to find the ground state energy
-result = vqe.compute_minimum_eigenvalue(quantum_instance)
+# # Run the VQE algorithm to find the ground state energy
+# for i in range(100):
+result = vqe.compute_minimum_eigenvalue(hamiltonian)
+print(result)
 
-print(result)  # Ground state energy
+
+
+# print(result)  # Ground state energy

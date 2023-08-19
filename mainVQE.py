@@ -2,7 +2,7 @@ from qiskit.algorithms.optimizers import COBYLA
 from qiskit.circuit.library import TwoLocal
 from qiskit.algorithms.minimum_eigensolvers import VQE
 import numpy as np
-import matplotlib.pyplot as plt
+
 from qiskit.quantum_info import SparsePauliOp
 from qiskit.primitives import Estimator
 
@@ -33,12 +33,6 @@ H2_op = SparsePauliOp.from_list([
 
 result = vqe.compute_minimum_eigenvalue(H2_op)
 
-plt.xlabel("Iteration")
-plt.ylabel("Optimal Parameters")
-plt.title("VQE Results")
-
-
-plt.show()
 
 print(result)
 
